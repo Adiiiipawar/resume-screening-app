@@ -2,8 +2,17 @@ import spacy
 import PyPDF2
 import os
 
-# Load spaCy English model
-nlp = spacy.load("en_core_web_sm")
+import spacy
+import importlib.util
+
+# Check if model is installed; if not, download it
+model_name = "en_core_web_sm"
+if importlib.util.find_spec(model_name) is None:
+    from spacy.cli import download
+    download(model_name)
+
+nlp = spacy.load(model_name)
+
 
 def extract_text_from_pdf(pdf_path):
     """Extract raw text from a PDF file."""
