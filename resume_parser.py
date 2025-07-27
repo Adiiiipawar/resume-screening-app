@@ -1,4 +1,4 @@
-import os
+"""import os
 import spacy
 import PyPDF2
 import importlib.util
@@ -12,7 +12,7 @@ if importlib.util.find_spec(model_name) is None:
 nlp = spacy.load(model_name)
 
 def extract_text_from_pdf(pdf_path):
-    """Extract raw text from a PDF file."""
+  #  Extract raw text from a PDF file.
     text = ""
     with open(pdf_path, "rb") as file:
         reader = PyPDF2.PdfReader(file)
@@ -23,11 +23,47 @@ def extract_text_from_pdf(pdf_path):
     return text
 
 def parse_resume(pdf_path):
-    """Parse resume and return raw text."""
+    #Parse resume and return raw text.#
     return extract_text_from_pdf(pdf_path)
 
 def extract_entities(text):
-    """Extract basic named entities using spaCy (optional feature)."""
+    #Extract basic named entities using spaCy (optional feature).
+    doc = nlp(text)
+    entities = {
+        "PERSON": [],
+        "ORG": [],
+        "GPE": [],
+    }
+    for ent in doc.ents:
+        if ent.label_ in entities:
+            entities[ent.label_].append(ent.text)
+    return entities
+"""
+
+
+
+
+import spacy
+import PyPDF2
+import os
+
+# Load pre-installed model (will work if installed via requirements.txt)
+nlp = spacy.load("en_core_web_sm")
+
+def extract_text_from_pdf(pdf_path):
+    text = ""
+    with open(pdf_path, "rb") as file:
+        reader = PyPDF2.PdfReader(file)
+        for page in reader.pages:
+            extracted = page.extract_text()
+            if extracted:
+                text += extracted
+    return text
+
+def parse_resume(pdf_path):
+    return extract_text_from_pdf(pdf_path)
+
+def extract_entities(text):
     doc = nlp(text)
     entities = {
         "PERSON": [],
